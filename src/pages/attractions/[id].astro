@@ -1,0 +1,430 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { attractions } from '../../data/attractions.js';
+
+export function getStaticPaths() {
+  return attractions.map(attraction => ({
+    params: { id: attraction.id },
+    props: { attraction }
+  }));
+}
+
+const { attraction } = Astro.props;
+---
+
+<Layout title={`${attraction.name} - Достопримечательности Кыргызстана`} description={attraction.description}>
+  <article class="attraction-detail">
+    <div class="hero-section">
+      <div class="hero-image">
+        <img src={attraction.image} alt={attraction.name} />
+        <div class="hero-overlay">
+          <div class="container">
+            <div class="breadcrumb">
+              <a href="/">Главная</a>
+              <span>/</span>
+              <a href="/attractions">Достопримечательности</a>
+              <span>/</span>
+              <span>{attraction.name}</span>
+            </div>
+            <h1 class="hero-title">{attraction.name}</h1>
+            <p class="hero-region">{attraction.region}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <div class="container">
+        <div class="content-grid">
+          <div class="main-content">
+            <div class="description">
+              <h2>Описание</h2>
+              <p class="lead-text">{attraction.description}</p>
+              <p class="full-description">{attraction.fullDescription}</p>
+            </div>
+
+            <div class="highlights">
+              <h2>Особенности</h2>
+              <ul class="highlights-list">
+                {attraction.highlights.map(highlight => (
+                  <li class="highlight-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9,11 12,14 22,4"/>
+                      <path d="M21,12v7a2,2 0,0,1-2,2H5a2,2 0,0,1-2-2V5a2,2 0,0,1,2-2h11"/>
+                    </svg>
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="sidebar">
+            <div class="info-card">
+              <h3>Информация</h3>
+              <div class="info-item">
+                <strong>Регион:</strong>
+                <span>{attraction.region}</span>
+              </div>
+              <div class="info-item">
+                <strong>Тип:</strong>
+                <span>Природная достопримечательность</span>
+              </div>
+            </div>
+
+            <div class="actions-card">
+              <h3>Действия</h3>
+              <button class="action-button share-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                  <polyline points="16,6 12,2 8,6"/>
+                  <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                Поделиться
+              </button>
+              <button class="action-button favorite-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                В избранное
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation">
+          <a href="/attractions" class="back-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Вернуться к списку
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .attraction-detail {
+    padding-bottom: 4rem;
+  }
+
+  .hero-section {
+    position: relative;
+    height: 60vh;
+    min-height: 500px;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    display: flex;
+    align-items: flex-end;
+    color: white;
+    padding: 3rem 0;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .breadcrumb a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .breadcrumb a:hover {
+    opacity: 0.7;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-region {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+
+  .content-section {
+    padding: 4rem 0;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .description h2,
+  .highlights h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .description h2::after,
+  .highlights h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+    border-radius: 2px;
+  }
+
+  .lead-text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .full-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #4B5563;
+  }
+
+  .highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #EBF4FF 0%, #E0F2FE 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    font-weight: 500;
+    color: #1E40AF;
+  }
+
+  .highlight-item svg {
+    color: #10B981;
+    flex-shrink: 0;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .info-card,
+  .actions-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.05);
+  }
+
+  .info-card h3,
+  .actions-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .info-item:last-child {
+    border-bottom: none;
+  }
+
+  .info-item strong {
+    color: #374151;
+  }
+
+  .info-item span {
+    color: #6B7280;
+  }
+
+  .action-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #EBF4FF 0%, #E0F2FE 100%);
+    color: #2563EB;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+  }
+
+  .action-button:last-child {
+    margin-bottom: 0;
+  }
+
+  .action-button:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .navigation {
+    padding-top: 2rem;
+    border-top: 1px solid #E5E7EB;
+  }
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .back-button:hover {
+    background: linear-gradient(135deg, #4B5563 0%, #374151 100%);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 1024px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .sidebar {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      height: 50vh;
+      min-height: 400px;
+    }
+
+    .hero-overlay {
+      padding: 2rem 0;
+    }
+
+    .content-section {
+      padding: 3rem 0;
+    }
+
+    .main-content {
+      gap: 2rem;
+    }
+
+    .description h2,
+    .highlights h2 {
+      font-size: 1.5rem;
+    }
+
+    .lead-text {
+      font-size: 1.1rem;
+    }
+
+    .info-card,
+    .actions-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const shareButton = document.querySelector('.share-button');
+    const favoriteButton = document.querySelector('.favorite-button');
+
+    if (shareButton) {
+      shareButton.addEventListener('click', function() {
+        if (navigator.share) {
+          navigator.share({
+            title: document.title,
+            url: window.location.href
+          });
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert('Ссылка скопирована в буфер обмена!');
+        }
+      });
+    }
+
+    if (favoriteButton) {
+      favoriteButton.addEventListener('click', function() {
+        const svg = favoriteButton.querySelector('svg');
+        const path = svg?.querySelector('path');
+        
+        if (path?.getAttribute('fill') === 'currentColor') {
+          path.setAttribute('fill', 'none');
+          favoriteButton.textContent = 'В избранное';
+        } else {
+          path?.setAttribute('fill', 'currentColor');
+          favoriteButton.textContent = 'В избранном';
+        }
+      });
+    }
+  });
+</script>

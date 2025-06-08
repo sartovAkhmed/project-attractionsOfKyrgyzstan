@@ -1,0 +1,209 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AttractionCard from '../../components/AttractionCard.astro';
+import { attractions, regions } from '../../data/attractions.js';
+---
+
+<Layout title="Все достопримечательности Кыргызстана" description="Полный список достопримечательностей Кыргызстана с подробным описанием и фотографиями">
+  <section class="attractions-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Достопримечательности Кыргызстана</h1>
+        <p class="page-subtitle">
+          Исследуйте все удивительные места нашей прекрасной страны
+        </p>
+      </div>
+    </div>
+
+    <div class="filters-section">
+      <div class="container">
+        <div class="filters">
+          <div class="filter-group">
+            <label for="region-filter" class="filter-label">Регион:</label>
+            <select id="region-filter" class="filter-select">
+              {regions.map(region => (
+                <option value={region}>{region}</option>
+              ))}
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="search-filter" class="filter-label">Поиск:</label>
+            <input 
+              type="text" 
+              id="search-filter" 
+              class="filter-input"
+              placeholder="Найти достопримечательность..."
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="attractions-section">
+      <div class="container">
+        <div class="attractions-grid" id="attractions-grid">
+          {attractions.map(attraction => (
+            <div class="attraction-item" data-region={attraction.region}>
+              <AttractionCard attraction={attraction} />
+            </div>
+          ))}
+        </div>
+        <div class="no-results" id="no-results" style="display: none;">
+          <p>По вашему запросу ничего не найдено. Попробуйте изменить фильтры.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .attractions-page {
+    padding-bottom: 4rem;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .filters-section {
+    background: #F8FAFC;
+    padding: 2rem 0;
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  .filters {
+    display: flex;
+    gap: 2rem;
+    align-items: end;
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+  }
+
+  .filter-select,
+  .filter-input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    min-width: 200px;
+  }
+
+  .filter-select:focus,
+  .filter-input:focus {
+    outline: none;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  .attractions-section {
+    padding: 4rem 0;
+  }
+
+  .attractions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .attraction-item {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 4rem 0;
+    color: #6B7280;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-header {
+      padding: 3rem 0;
+    }
+
+    .filters {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .filter-select,
+    .filter-input {
+      min-width: auto;
+    }
+
+    .attractions-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .attractions-section {
+      padding: 3rem 0;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
+    const searchFilter = document.getElementById('search-filter') as HTMLInputElement;
+    const attractionItems = document.querySelectorAll('.attraction-item');
+    const noResults = document.getElementById('no-results');
+
+    function filterAttractions() {
+      const selectedRegion = regionFilter.value;
+      const searchTerm = searchFilter.value.toLowerCase();
+      let visibleCount = 0;
+
+      attractionItems.forEach(item => {
+        const itemElement = item as HTMLElement;
+        const region = itemElement.getAttribute('data-region') || '';
+        const name = itemElement.textContent?.toLowerCase() || '';
+        
+        const regionMatch = selectedRegion === 'Все регионы' || region === selectedRegion;
+        const searchMatch = searchTerm === '' || name.includes(searchTerm);
+        
+        if (regionMatch && searchMatch) {
+          itemElement.style.display = 'block';
+          visibleCount++;
+        } else {
+          itemElement.style.display = 'none';
+        }
+      });
+
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    regionFilter.addEventListener('change', filterAttractions);
+    searchFilter.addEventListener('input', filterAttractions);
+  });
+</script>

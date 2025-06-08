@@ -1,0 +1,221 @@
+---
+---
+
+<section class="hero">
+  <div class="hero-background">
+    <div class="hero-gradient"></div>
+  </div>
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          Откройте для себя
+          <span class="hero-highlight">Кыргызстан</span>
+        </h1>
+        <p class="hero-subtitle">
+          Путешествуйте по самым красивым местам страны небесных гор.
+          От кристально чистых высокогорных озер до древних памятников
+          на Великом Шелковом пути.
+        </p>
+        <div class="hero-actions">
+          <a href="/attractions" class="hero-button primary">
+            Исследовать достопримечательности
+          </a>
+          <a href="/about" class="hero-button secondary">
+            Узнать больше о стране
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-indicator">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M7 13l3 3 7-7"/>
+        <path d="M7 6l3 3 7-7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(135deg, #2563EB 0%, #10B981 50%, #F59E0B 100%),
+      url('https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.7) 0%,
+      rgba(16, 185, 129, 0.6) 50%,
+      rgba(245, 158, 11, 0.7) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-highlight {
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  .hero-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+    border-radius: 2px;
+    opacity: 0.8;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.375rem);
+    line-height: 1.6;
+    margin: 0 0 2.5rem 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-button {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-button.primary {
+    background: rgba(255, 255, 255, 0.95);
+    color: #2563EB;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .hero-button.primary:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-button.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .hero-button.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .scroll-indicator {
+    color: white;
+    opacity: 0.8;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      height: 90vh;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-button {
+      padding: 0.875rem 1.5rem;
+      font-size: 0.95rem;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
+  }
+</style>
